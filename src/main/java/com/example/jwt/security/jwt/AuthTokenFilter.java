@@ -1,6 +1,5 @@
 package com.example.jwt.security.jwt;
 
-import com.example.jwt.security.service.UsersDetailService;
 import com.example.jwt.security.service.UsersDetailServiceImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private  JwtUtils jwtUtils;
 
     @Autowired
-    private UsersDetailService usersDetailService;
+    private UsersDetailServiceImp usersDetailService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
@@ -37,7 +36,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)){
 
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
-                UserDetails userDetails = usersDetailService.loadUsersByUsername(username);
+                UserDetails userDetails = usersDetailService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails , null, userDetails.getAuthorities()
                 );
